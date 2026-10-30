@@ -1,0 +1,12 @@
+
+{
+  "name": "Youssef OS",
+  "short_name": "Youssef OS",
+  "description": "Your personal daily operating system",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#090a0c",
+  "theme_color": "#090a0c"
+}
