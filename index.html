@@ -5,155 +5,663 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#090a0c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Youssef OS">
+<link rel="manifest" href="./manifest.webmanifest">
 <title>Youssef OS</title>
+
 <style>
-:root{color-scheme:dark;--bg:#090a0c;--panel:#15171b;--line:#292c32;--muted:#858991;--white:#f4f4f5}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--white);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif}
-button,input{font:inherit}
-button{cursor:pointer;color:inherit}
-button:active{transform:scale(.96)}
-.app{max-width:650px;margin:auto;padding-bottom:100px}
-header{padding:25px 20px 18px;display:flex;justify-content:space-between;align-items:center}
-.eyebrow{font-size:10px;letter-spacing:3px;color:var(--muted)}
-.logo{font-size:27px;font-weight:800;letter-spacing:-1.5px;margin-top:5px}
-.logo span{color:#777}
-.clock{text-align:right;font-size:19px;font-weight:700}
-.clock small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
-main{padding:0 16px}
-.page{animation:enter .3s ease}
-@keyframes enter{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
-.panel{background:linear-gradient(145deg,#191b20,#111215);border:1px solid var(--line);border-radius:19px;padding:16px;margin-bottom:13px}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.muted{color:var(--muted)}
-.small{font-size:11px;color:var(--muted)}
-.percent{font-size:34px;font-weight:750;margin-top:8px}
-.ring{width:75px;height:75px;border-radius:50%;background:conic-gradient(#eee var(--p),#303238 0);display:grid;place-items:center;position:relative}
-.ring:before{content:"";position:absolute;inset:6px;background:#15171b;border-radius:50%}
-.ring b{z-index:1}
-.bar{height:5px;background:#303238;border-radius:9px;overflow:hidden;margin-top:15px}
-.bar div{height:100%;background:#eee;transition:width .4s}
-h2{font-size:22px;margin:20px 2px 5px}
-.subtitle{font-size:12px;color:var(--muted);margin:0 2px 18px}
-.task{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #292b30;font-size:13px}
-.task:last-child{border:0}
-.check{width:21px;height:21px;border:1px solid #555;border-radius:7px;background:transparent;flex-shrink:0}
-.check.done{background:#eee;color:#111;border-color:#eee}
-.task.done span{text-decoration:line-through;color:#777}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.metric{font-size:21px;font-weight:700;margin-top:8px}
-nav{position:fixed;bottom:0;left:0;right:0;background:#0d0e10f5;border-top:1px solid #292b30;padding:9px 3px calc(9px + env(safe-area-inset-bottom));display:flex;justify-content:center;z-index:10}
-.navbtn{flex:1;max-width:100px;border:0;background:none;color:#858991;border-radius:12px;padding:8px 2px;font-size:10px}
-.navbtn span{display:block;font-size:19px;margin-bottom:4px}
-.navbtn.active{background:#282a30;color:white}
-.action{background:#eee;color:#111;border:0;padding:10px 14px;border-radius:11px;font-size:12px;font-weight:700}
-.soft{background:#25272d;border:1px solid #363941;padding:10px 13px;border-radius:10px;font-size:12px}
-.widget{background:linear-gradient(145deg,#1c1e23,#111215);border:1px solid #303239;border-radius:16px;padding:15px;position:relative;animation:enter .25s ease}
-.widget .remove{position:absolute;right:10px;top:9px;background:none;border:0;color:#888;font-size:17px}
-.widget-title{font-size:11px;color:#999;letter-spacing:1px}
-.widget-value{font-size:24px;font-weight:750;margin-top:10px}
-.widgets{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:13px}
-select,input{background:#22242a;border:1px solid #363941;border-radius:10px;padding:11px;color:white;width:100%;margin-top:8px}
-.notice{font-size:11px;color:#999;line-height:1.5;margin-top:15px}
+:root {
+  --bg:#090a0c;
+  --surface:#111317;
+  --surface2:#181b20;
+  --border:rgba(255,255,255,.075);
+  --text:#f5f5f5;
+  --muted:#858991;
+  --accent:#d7ff64;
+  --radius:22px;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:110px;
+}
+button,input {font:inherit}
+button {cursor:pointer}
+.app {
+  max-width:650px;
+  margin:auto;
+  padding:env(safe-area-inset-top) 19px 25px;
+}
+header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:24px 0;
+}
+.brand {font-size:19px;font-weight:750;letter-spacing:-.7px}
+.brand span {color:var(--accent)}
+.date {font-size:12px;color:var(--muted);margin-top:5px}
+.avatar {
+  width:42px;height:42px;border-radius:15px;
+  background:var(--surface2);display:grid;place-items:center;
+  border:1px solid var(--border);font-weight:700;
+}
+.page {display:none;animation:appear .35s ease}
+.page.active {display:block}
+@keyframes appear {
+  from {opacity:0;transform:translateY(9px)}
+  to {opacity:1;transform:translateY(0)}
+}
+.greeting {margin:22px 0 24px}
+.eyebrow {
+  color:var(--muted);font-size:11px;
+  text-transform:uppercase;letter-spacing:2px;
+}
+h1 {font-size:32px;letter-spacing:-1.4px;margin:9px 0 5px}
+.subtitle {color:var(--muted);font-size:13px}
+.section-head {
+  display:flex;justify-content:space-between;align-items:center;
+  margin:27px 0 14px;
+}
+.section-head h2 {font-size:16px;margin:0}
+.small-btn {
+  background:transparent;border:0;color:var(--accent);
+  font-size:12px;padding:8px;
+}
+.grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:17px;
+  min-width:0;
+  animation:appear .4s ease;
+}
+.card.wide {grid-column:1/-1}
+.card-top {display:flex;justify-content:space-between;align-items:center}
+.card-icon {
+  width:34px;height:34px;border-radius:12px;
+  background:var(--surface2);display:grid;place-items:center;
+  font-size:16px;
+}
+.card-label {font-size:12px;color:var(--muted);margin-top:15px}
+.card-value {font-size:25px;font-weight:700;margin-top:5px;letter-spacing:-1px}
+.card-note {font-size:11px;color:var(--muted);margin-top:6px}
+.progress {
+  height:5px;background:#292c31;border-radius:10px;
+  overflow:hidden;margin-top:14px;
+}
+.progress div {
+  height:100%;background:var(--accent);border-radius:10px;
+  transition:width .4s ease;
+}
+.hero {
+  background:linear-gradient(135deg,#1b2115,#111317 70%);
+  border:1px solid rgba(215,255,100,.12);
+  border-radius:27px;padding:23px;margin-bottom:14px;
+}
+.hero .card-value {font-size:42px}
+.hero p {font-size:12px;color:var(--muted)}
+.action {
+  background:var(--accent);color:#10120a;border:0;
+  padding:12px 16px;border-radius:13px;font-weight:750;
+  font-size:12px;
+}
+.secondary {
+  background:var(--surface2);color:var(--text);
+  border:1px solid var(--border);padding:11px 14px;
+  border-radius:12px;font-size:12px;
+}
+.task {
+  display:flex;align-items:center;gap:12px;
+  padding:14px 0;border-bottom:1px solid var(--border);
+}
+.task:last-child {border:0}
+.task input {accent-color:var(--accent);width:18px;height:18px}
+.task-name {font-size:13px;flex:1}
+.task.done .task-name {color:var(--muted);text-decoration:line-through}
+.task-time {font-size:10px;color:var(--muted)}
+.nav {
+  position:fixed;bottom:0;left:0;right:0;z-index:10;
+  display:flex;justify-content:space-around;
+  max-width:650px;margin:auto;
+  padding:12px 8px calc(12px + env(safe-area-inset-bottom));
+  background:rgba(12,13,16,.92);
+  backdrop-filter:blur(24px);
+  border-top:1px solid var(--border);
+}
+.nav button {
+  background:none;border:0;color:var(--muted);
+  display:flex;flex-direction:column;align-items:center;
+  gap:5px;font-size:10px;padding:5px 9px;
+}
+.nav button.active {color:var(--accent)}
+.nav-icon {font-size:18px}
+.list-item {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:15px 0;border-bottom:1px solid var(--border);
+  font-size:13px;
+}
+.list-item:last-child {border:0}
+input[type="text"],input[type="number"],input[type="time"] {
+  background:var(--surface2);color:var(--text);
+  border:1px solid var(--border);border-radius:12px;
+  padding:12px;width:100%;outline:none;
+}
+input:focus {border-color:var(--accent)}
+.form-row {display:flex;gap:9px;margin-top:12px}
+.form-row input {min-width:0}
+.empty {color:var(--muted);font-size:12px;padding:15px 0}
+.widget-remove {
+  border:0;background:none;color:var(--muted);font-size:17px;
+}
+.widget-picker {
+  display:flex;flex-direction:column;gap:9px;margin-top:15px;
+}
+.widget-option {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:13px;background:var(--surface2);
+  border:1px solid var(--border);border-radius:13px;
+  font-size:12px;
+}
+.widget-option button {background:none;border:0;color:var(--accent)}
+.timer {font-size:39px;font-weight:750;letter-spacing:-2px;margin:12px 0}
+.week-bars {display:flex;align-items:end;gap:9px;height:90px;margin-top:18px}
+.week-day {flex:1;text-align:center;font-size:9px;color:var(--muted)}
+.week-bar {background:#30343a;border-radius:5px;height:60px;display:flex;align-items:end;overflow:hidden}
+.week-bar div {width:100%;background:var(--accent);border-radius:5px}
+@media(max-width:370px) {
+  .app {padding-left:14px;padding-right:14px}
+  h1 {font-size:28px}
+  .card {padding:14px}
+}
 </style>
 </head>
+
 <body>
 <div class="app">
 <header>
-<div><div class="eyebrow">PERSONAL OPERATING SYSTEM</div><div class="logo">Youssef<span> OS.</span></div></div>
-<div class="clock"><div id="clock">--:--</div><small id="date">TODAY</small></div>
+  <div>
+    <div class="brand">YOUSSEF<span>.</span>OS</div>
+    <div class="date" id="today"></div>
+  </div>
+  <div class="avatar">Y</div>
 </header>
-<main id="content"></main>
-<nav>
-<button class="navbtn active" data-page="home"><span>⌂</span>Home</button>
-<button class="navbtn" data-page="habits"><span>✓</span>Habits</button>
-<button class="navbtn" data-page="schedule"><span>▦</span>Schedule</button>
-<button class="navbtn" data-page="nutrition"><span>◉</span>Food</button>
-<button class="navbtn" data-page="gym"><span>↗</span>Gym</button>
-<button class="navbtn" data-page="care"><span>✧</span>Care</button>
-</nav>
+
+<!-- HOME -->
+<section class="page active" id="home">
+  <div class="greeting">
+    <div class="eyebrow">YOUR PERSONAL SYSTEM</div>
+    <h1>Good morning.</h1>
+    <div class="subtitle">Make today count. One step at a time.</div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">DAILY PROGRESS</div>
+    <div class="card-value" id="progressNumber">0%</div>
+    <p id="progressText">You're just getting started.</p>
+    <div class="progress"><div id="mainProgress" style="width:0%"></div></div>
+  </div>
+
+  <div class="section-head">
+    <h2>Your widgets</h2>
+    <button class="small-btn" onclick="openWidgetPicker()">+ Customize</button>
+  </div>
+  <div class="grid" id="widgetGrid"></div>
+
+  <div class="section-head">
+    <h2>Today's priorities</h2>
+    <button class="small-btn" onclick="showPage('habits')">View all</button>
+  </div>
+  <div class="card" id="homeTasks"></div>
+</section>
+
+<!-- HABITS -->
+<section class="page" id="habits">
+  <div class="greeting">
+    <div class="eyebrow">CONSISTENCY IS EVERYTHING</div>
+    <h1>Habits.</h1>
+    <div class="subtitle">Build routines that actually last.</div>
+  </div>
+  <div class="card">
+    <div class="section-head" style="margin-top:0"><h2>Daily habits</h2></div>
+    <div id="habitList"></div>
+    <div class="form-row">
+      <input id="habitInput" type="text" placeholder="Add a new habit">
+      <button class="action" onclick="addHabit()">Add</button>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="page" id="schedule">
+  <div class="greeting">
+    <div class="eyebrow">PLAN YOUR DAY</div>
+    <h1>Schedule.</h1>
+    <div class="subtitle">Give every hour a purpose.</div>
+  </div>
+  <div class="card">
+    <div class="section-head" style="margin-top:0"><h2>Your schedule</h2></div>
+    <div id="scheduleList"></div>
+    <div class="form-row">
+      <input id="scheduleTime" type="time" style="max-width:115px">
+      <input id="scheduleInput" type="text" placeholder="What are you doing?">
+    </div>
+    <button class="action" style="margin-top:10px;width:100%" onclick="addSchedule()">Add event</button>
+  </div>
+</section>
+
+<!-- NUTRITION -->
+<section class="page" id="nutrition">
+  <div class="greeting">
+    <div class="eyebrow">TAKE CARE OF YOURSELF</div>
+    <h1>Nutrition.</h1>
+    <div class="subtitle">Keep track of your daily meals and water.</div>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon">💧</div>
+      <div class="card-label">Water glasses</div>
+      <div class="card-value" id="waterCount">0 / 8</div>
+      <div class="progress"><div id="waterProgress" style="width:0%"></div></div>
+      <button class="secondary" style="margin-top:14px" onclick="changeWater(1)">+ Add glass</button>
+      <button class="secondary" style="margin-top:8px" onclick="changeWater(-1)">− Remove</button>
+    </div>
+    <div class="card">
+      <div class="card-icon">🍽️</div>
+      <div class="card-label">Meals logged</div>
+      <div class="card-value" id="mealCount">0</div>
+      <div class="card-note">Meals recorded today</div>
+    </div>
+  </div>
+  <div class="section-head"><h2>Food journal</h2></div>
+  <div class="card">
+    <div id="mealList"></div>
+    <div class="form-row">
+      <input id="mealInput" type="text" placeholder="What did you eat?">
+      <button class="action" onclick="addMeal()">Add</button>
+    </div>
+  </div>
+</section>
+
+<!-- GYM -->
+<section class="page" id="gym">
+  <div class="greeting">
+    <div class="eyebrow">MOVEMENT & ENERGY</div>
+    <h1>Gym tracker.</h1>
+    <div class="subtitle">Track your activity and stay consistent.</div>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon">🏋️</div>
+      <div class="card-label">Workouts this week</div>
+      <div class="card-value" id="workoutCount">0</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔥</div>
+      <div class="card-label">Total sessions</div>
+      <div class="card-value" id="totalWorkouts">0</div>
+    </div>
+  </div>
+  <div class="section-head"><h2>Workout log</h2></div>
+  <div class="card">
+    <div id="workoutList"></div>
+    <div class="form-row">
+      <input id="workoutInput" type="text" placeholder="Workout / activity">
+      <button class="action" onclick="addWorkout()">Log</button>
+    </div>
+  </div>
+</section>
+
+<!-- CARE -->
+<section class="page" id="care">
+  <div class="greeting">
+    <div class="eyebrow">PERSONAL DEVELOPMENT</div>
+    <h1>Glow up.</h1>
+    <div class="subtitle">Small steps. Better routines. More confidence.</div>
+  </div>
+  <div class="card">
+    <div class="section-head" style="margin-top:0"><h2>Self-care checklist</h2></div>
+    <div id="careList"></div>
+  </div>
+  <div class="section-head"><h2>Personal notes</h2></div>
+  <div class="card">
+    <textarea id="notes" rows="5" placeholder="Write your thoughts, goals, or reminders..."
+      style="width:100%;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:13px;padding:13px;resize:vertical;font:inherit;outline:none"
+      oninput="saveNotes()"></textarea>
+    <div class="card-note">Saved automatically on this device.</div>
+  </div>
+</section>
+
+<!-- WIDGET PICKER -->
+<section class="page" id="widgets">
+  <div class="greeting">
+    <div class="eyebrow">MAKE IT YOURS</div>
+    <h1>Customize.</h1>
+    <div class="subtitle">Add or remove widgets from your dashboard.</div>
+  </div>
+  <div class="card">
+    <h2 style="font-size:15px">Available widgets</h2>
+    <div class="widget-picker" id="widgetPicker"></div>
+  </div>
+  <button class="secondary" style="width:100%;margin-top:15px" onclick="showPage('home')">Back to dashboard</button>
+</section>
 </div>
+
+<nav class="nav">
+  <button class="active" onclick="showPage('home',this)"><span class="nav-icon">⌂</span>Home</button>
+  <button onclick="showPage('habits',this)"><span class="nav-icon">✓</span>Habits</button>
+  <button onclick="showPage('schedule',this)"><span class="nav-icon">▦</span>Plan</button>
+  <button onclick="showPage('nutrition',this)"><span class="nav-icon">◉</span>Food</button>
+  <button onclick="showPage('gym',this)"><span class="nav-icon">↗</span>Gym</button>
+  <button onclick="showPage('care',this)"><span class="nav-icon">✧</span>Care</button>
+</nav>
+
 <script>
-const KEY="youssef-os-data-v4";
-const today=()=>new Date().toLocaleDateString("en-CA");
-const fresh=()=>({date:today(),done:{},habits:{},meals:{},morning:{},night:{},widgets:["progress","clock","focus","sleep"]});
-let data=fresh();
-try{
- const old=JSON.parse(localStorage.getItem(KEY));
- if(old)data=old;
- if(data.date!==today()){data.date=today();data.done={};data.meals={};}
-}catch(e){}
-const tasks=["Wake up on time","Pack school food and water","Eat lunch after school","Study or work on a project","Move your body or take a rest day","Complete night care","Put phone away before sleep"];
-const habits=["Drink water regularly","Eat balanced meals","Brush teeth twice","Organize my study space","Take breaks from screens","Get enough sleep"];
-const morning=["Gentle face wash","Moisturizer","SPF 30+ sunscreen","Brush teeth"];
-const night=["Gentle face wash","Moisturizer","Brush teeth","Prepare school bag"];
-const meals=["Breakfast · sandwich + fruit","School snack · yogurt or fruit","Lunch · protein + rice/pasta/potatoes + vegetables","Dinner · eggs, beans, cheese or another balanced meal"];
-const schedule=[["05:30","Wake up"],["06:00 – 16:30","School"],["16:30","Lunch and rest"],["17:30","Gym or walk"],["18:30","Study / homework"],["20:00","Dinner and night care"],["20:45","Sleep target"]];
-function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){console.warn("Local save unavailable",e)}}
-function checks(items,obj,kind){return items.map((x,i)=>`<div class="task ${obj[i]?"done":""}"><button class="check ${obj[i]?"done":""}" data-kind="${kind}" data-i="${i}">${obj[i]?"✓":""}</button><span>${x}</span></div>`).join("")}
-function bind(){document.querySelectorAll("[data-kind]").forEach(b=>b.onclick=()=>{data[b.dataset.kind][b.dataset.i]=!data[b.dataset.kind][b.dataset.i];save();render(current)})}
-let current="home",focusSeconds=25*60,focusInterval=null;
-function widgetHTML(id){
-const definitions={
-progress:()=>{let n=tasks.filter((_,i)=>data.done[i]).length;return `<div class="widget"><div class="widget-title">DAILY PROGRESS</div><div class="widget-value">${Math.round(n/tasks.length*100)}%</div><div class="small">${n} / ${tasks.length} tasks</div></div>`},
-clock:()=>`<div class="widget"><div class="widget-title">LIVE CLOCK</div><div class="widget-value" id="widget-clock">--:--</div><div class="small">Your local time</div></div>`,
-focus:()=>`<div class="widget"><div class="widget-title">FOCUS TIMER</div><div class="widget-value" id="focus-time">25:00</div><button class="soft" onclick="toggleFocus()" id="focus-button" style="margin-top:10px">Start</button><button class="soft" onclick="resetFocus()" style="margin:10px 0 0 5px">Reset</button></div>`,
-sleep:()=>`<div class="widget"><div class="widget-title">SLEEP TARGET</div><div class="widget-value">8–10 hrs</div><div class="small">Make room for recovery</div></div>`,
-gym:()=>`<div class="widget"><div class="widget-title">GYM TRACKER</div><div class="widget-value">2 days / week</div><div class="small">Sunday · Wednesday</div></div>`,
-study:()=>`<div class="widget"><div class="widget-title">STUDY FOCUS</div><div class="widget-value">One step</div><div class="small">Focus on your next task</div></div>`,
-food:()=>`<div class="widget"><div class="widget-title">NUTRITION</div><div class="widget-value">Meal check</div><div class="small">Eat regularly and hydrate</div></div>`,
-week:()=>`<div class="widget"><div class="widget-title">WEEKLY PLAN</div><div class="widget-value">2 sessions</div><div class="small">Planned schedule, not measured data</div></div>`
-};
-return definitions[id]?.()||"";
+const DEFAULT_HABITS = [
+  "Wake up on time",
+  "Drink enough water",
+  "Study / learn something",
+  "Read for 15 minutes",
+  "Keep my space organized"
+];
+const DEFAULT_CARE = [
+  "Morning skincare",
+  "Brush teeth",
+  "Organize my room",
+  "Evening skincare",
+  "Prepare for tomorrow"
+];
+const WIDGETS = [
+  {id:"clock",name:"Live Clock",icon:"◷"},
+  {id:"focus",name:"Focus Timer",icon:"◉"},
+  {id:"sleep",name:"Sleep Target",icon:"☾"},
+  {id:"study",name:"Study Focus",icon:"▤"},
+  {id:"week",name:"Weekly Overview",icon:"▥"},
+  {id:"water",name:"Water Tracker",icon:"♧"}
+];
+
+function freshState() {
+  return {
+    habits:DEFAULT_HABITS.map((name,i)=>({id:i+1,name,done:false})),
+    care:DEFAULT_CARE.map((name,i)=>({id:i+1,name,done:false})),
+    schedule:[],
+    meals:[],
+    workouts:[],
+    water:0,
+    notes:"",
+    widgets:["clock","focus","sleep","study","week","water"],
+    focusSeconds:1500,
+    focusRunning:false
+  };
 }
-function renderWidgets(){
-return `<div class="row" style="margin:22px 2px 10px"><strong>My widgets</strong><button class="soft" onclick="addWidget()">+ Add widget</button></div><div class="widgets">${data.widgets.map(id=>`<div>${widgetHTML(id)}<button class="remove" onclick="removeWidget('${id}')">×</button></div>`).join("")}</div>`;
+
+let data;
+try {
+  data=JSON.parse(localStorage.getItem("youssef-os-data-v4")) || freshState();
+} catch(e) {
+  data=freshState();
 }
-function addWidget(){
-const options=[["progress","Daily Progress"],["clock","Live Clock"],["focus","Focus Timer"],["sleep","Sleep Target"],["gym","Gym Tracker"],["study","Study Focus"],["food","Nutrition Reminder"],["week","Weekly Overview"]];
-const remaining=options.filter(x=>!data.widgets.includes(x[0]));
-if(!remaining.length){alert("All widgets are already added.");return}
-const choice=prompt("Choose a widget:\n"+remaining.map((x,i)=>(i+1)+". "+x[1]).join("\n")+"\nEnter its number:");
-const item=remaining[Number(choice)-1];
-if(item){data.widgets.push(item[0]);save();render(current)}
+
+function save() {
+  localStorage.setItem("youssef-os-data-v4",JSON.stringify(data));
+  render();
 }
-function removeWidget(id){data.widgets=data.widgets.filter(x=>x!==id);save();render(current)}
-function toggleFocus(){
-if(focusInterval){clearInterval(focusInterval);focusInterval=null;document.getElementById("focus-button").textContent="Resume";return}
-document.getElementById("focus-button").textContent="Pause";
-focusInterval=setInterval(()=>{focusSeconds--;const el=document.getElementById("focus-time");if(el)el.textContent=fmt(focusSeconds);if(focusSeconds<=0){clearInterval(focusInterval);focusInterval=null;alert("Focus session complete!");}},1000);
+function esc(s) {
+  return String(s).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
 }
-function resetFocus(){clearInterval(focusInterval);focusInterval=null;focusSeconds=25*60;const el=document.getElementById("focus-time");if(el)el.textContent="25:00";const b=document.getElementById("focus-button");if(b)b.textContent="Start"}
-function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
-function render(page="home"){
-current=page;
-const content=document.getElementById("content");
-if(page==="home"){
-let n=tasks.filter((_,i)=>data.done[i]).length,p=Math.round(n/tasks.length*100);
-content.innerHTML=`<section class="page"><div class="panel" style="margin-top:8px"><div class="row"><div><div class="small">TODAY'S PROGRESS</div><div class="percent">${p}%</div><div class="small">${n} of ${tasks.length} tasks completed</div></div><div class="ring" style="--p:${p}%"><b>${p}%</b></div></div><div class="bar"><div style="width:${p}%"></div></div></div><div style="font-size:18px;font-weight:700;margin:22px 2px 10px">Daily routine</div><div class="panel">${checks(tasks,data.done,"done")}</div>${renderWidgets()}</section>`;
-}else if(page==="habits"){
-content.innerHTML=`<section class="page"><h2>Habits</h2><p class="subtitle">Small actions, repeated consistently.</p><div class="panel">${checks(habits,data.habits,"habits")}</div></section>`;
-}else if(page==="schedule"){
-content.innerHTML=`<section class="page"><h2>Schedule</h2><p class="subtitle">A simple structure for school days.</p><div class="panel">${schedule.map(([t,n])=>`<div class="task"><span class="small" style="width:105px">${t}</span><span>${n}</span></div>`).join("")}</div></section>`;
-}else if(page==="nutrition"){
-content.innerHTML=`<section class="page"><h2>Nutrition</h2><p class="subtitle">Balanced meals and enough energy.</p><div class="panel"><strong>Today's meals</strong>${meals.map((m,i)=>`<div class="task"><button class="check ${data.meals[i]?"done":""}" data-kind="meals" data-i="${i}">${data.meals[i]?"✓":""}</button><span>${m}</span></div>`).join("")}<p class="notice">Eat regularly, drink water, and adjust portions to your hunger. No strict food rules.</p></div></section>`;
-}else if(page==="gym"){
-content.innerHTML=`<section class="page"><h2>Gym</h2><p class="subtitle">A steady, safe weekly structure.</p><div class="panel"><strong>Sunday · Full body</strong><p class="small">Work with your trainer on safe technique and suitable resistance.</p><div class="bar"><div style="width:50%"></div></div><div style="margin-top:17px"><strong>Wednesday · Full body</strong></div><p class="small">Rest between sessions. Stop if something hurts and tell your trainer.</p></div><div class="panel"><strong>Other days</strong><p class="small">Walking is a good option. Saturday is a rest day.</p></div></section>`;
-}else{
-content.innerHTML=`<section class="page"><h2>Glow Up</h2><p class="subtitle">Simple care, consistency over perfection.</p><div class="panel"><strong>Morning care</strong>${checks(morning,data.morning,"morning")}</div><div class="panel"><strong>Night care</strong>${checks(night,data.night,"night")}</div></section>`;
+function todayKey() {
+  return new Date().toLocaleDateString("en-CA");
 }
-bind();
-document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+function resetDailyIfNeeded() {
+  if(data.lastDate!==todayKey()) {
+    data.habits.forEach(x=>x.done=false);
+    data.care.forEach(x=>x.done=false);
+    data.water=0;
+    data.meals=[];
+    data.lastDate=todayKey();
+    localStorage.setItem("youssef-os-data-v4",JSON.stringify(data));
+  }
 }
-document.querySelectorAll(".navbtn").forEach(b=>b.onclick=()=>render(b.dataset.page));
-function tick(){
-const d=new Date();
-document.getElementById("clock").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-document.getElementById("date").textContent=d.toLocaleDateString([],{weekday:"short",day:"numeric",month:"short"}).toUpperCase();
-const w=document.getElementById("widget-clock");if(w)w.textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+resetDailyIfNeeded();
+
+function showPage(id,btn) {
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  else if(id!=="widgets") {
+    const map={home:0,habits:1,schedule:2,nutrition:3,gym:4,care:5};
+    document.querySelectorAll(".nav button")[map[id]]?.classList.add("active");
+  }
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(id==="widgets") renderWidgetPicker();
 }
-tick();setInterval(tick,30000);render();
+
+function openWidgetPicker() {
+  showPage("widgets");
+}
+
+function addHabit() {
+  const input=document.getElementById("habitInput");
+  const name=input.value.trim();
+  if(!name)return;
+  data.habits.push({id:Date.now(),name,done:false});
+  input.value="";save();
+}
+function toggleHabit(id) {
+  const h=data.habits.find(x=>x.id===id);
+  if(h)h.done=!h.done;
+  save();
+}
+function deleteHabit(id) {
+  data.habits=data.habits.filter(x=>x.id!==id);save();
+}
+function addSchedule() {
+  const name=document.getElementById("scheduleInput").value.trim();
+  const time=document.getElementById("scheduleTime").value;
+  if(!name)return;
+  data.schedule.push({id:Date.now(),name,time});
+  data.schedule.sort((a,b)=>(a.time||"").localeCompare(b.time||""));
+  document.getElementById("scheduleInput").value="";
+  save();
+}
+function deleteSchedule(id) {
+  data.schedule=data.schedule.filter(x=>x.id!==id);save();
+}
+function addMeal() {
+  const input=document.getElementById("mealInput");
+  if(!input.value.trim())return;
+  data.meals.push({id:Date.now(),name:input.value.trim()});
+  input.value="";save();
+}
+function deleteMeal(id) {
+  data.meals=data.meals.filter(x=>x.id!==id);save();
+}
+function changeWater(n) {
+  data.water=Math.max(0,Math.min(30,data.water+n));save();
+}
+function addWorkout() {
+  const input=document.getElementById("workoutInput");
+  if(!input.value.trim())return;
+  data.workouts.push({id:Date.now(),name:input.value.trim(),date:todayKey()});
+  input.value="";save();
+}
+function deleteWorkout(id) {
+  data.workouts=data.workouts.filter(x=>x.id!==id);save();
+}
+function toggleCare(id) {
+  const item=data.care.find(x=>x.id===id);
+  if(item)item.done=!item.done;
+  save();
+}
+function saveNotes() {
+  data.notes=document.getElementById("notes").value;
+  localStorage.setItem("youssef-os-data-v4",JSON.stringify(data));
+}
+
+function renderTasks(items,mode) {
+  if(!items.length)return '<div class="empty">Nothing here yet.</div>';
+  return items.map(item=>`
+    <div class="task ${item.done?"done":""}">
+      <input type="checkbox" ${item.done?"checked":""}
+        onchange="${mode==="care"?"toggleCare":"toggleHabit"}(${item.id})">
+      <span class="task-name">${esc(item.name)}</span>
+      <button class="widget-remove" onclick="delete${mode==="care"?"Care":"Habit"}(${item.id})">×</button>
+    </div>`).join("");
+}
+function deleteCare(id) {
+  data.care=data.care.filter(x=>x.id!==id);save();
+}
+function renderHabits() {
+  document.getElementById("habitList").innerHTML=renderTasks(data.habits,"habit");
+  document.getElementById("careList").innerHTML=renderTasks(data.care,"care");
+}
+function renderSchedule() {
+  const el=document.getElementById("scheduleList");
+  el.innerHTML=data.schedule.length?data.schedule.map(x=>`
+    <div class="list-item">
+      <span>${esc(x.name)}</span>
+      <span style="color:var(--muted)">${esc(x.time||"Anytime")}
+        <button class="widget-remove" onclick="deleteSchedule(${x.id})">×</button>
+      </span>
+    </div>`).join(""):'<div class="empty">No events planned yet.</div>';
+}
+function renderMeals() {
+  document.getElementById("mealCount").textContent=data.meals.length;
+  document.getElementById("mealList").innerHTML=data.meals.length?data.meals.map(x=>`
+    <div class="list-item"><span>${esc(x.name)}</span>
+    <button class="widget-remove" onclick="deleteMeal(${x.id})">×</button></div>
+  `).join(""):'<div class="empty">Your food journal is empty.</div>';
+}
+function renderGym() {
+  const weekAgo=new Date();weekAgo.setDate(weekAgo.getDate()-6);
+  const recent=data.workouts.filter(x=>new Date(x.date)>=new Date(weekAgo.toLocaleDateString("en-CA")));
+  document.getElementById("workoutCount").textContent=recent.length;
+  document.getElementById("totalWorkouts").textContent=data.workouts.length;
+  document.getElementById("workoutList").innerHTML=data.workouts.length?data.workouts.slice().reverse().map(x=>`
+    <div class="list-item"><span>${esc(x.name)}</span>
+    <span style="color:var(--muted)">${esc(x.date)}
+    <button class="widget-remove" onclick="deleteWorkout(${x.id})">×</button></span></div>
+  `).join(""):'<div class="empty">No workouts logged yet.</div>';
+}
+function renderProgress() {
+  const total=data.habits.length+data.care.length;
+  const done=[...data.habits,...data.care].filter(x=>x.done).length;
+  const percent=total?Math.round(done/total*100):0;
+  document.getElementById("progressNumber").textContent=percent+"%";
+  document.getElementById("progressText").textContent=done+" of "+total+" habits completed today.";
+  document.getElementById("mainProgress").style.width=percent+"%";
+  document.getElementById("homeTasks").innerHTML=renderTasks(data.habits.slice(0,4),"habit");
+}
+function renderWater() {
+  document.getElementById("waterCount").textContent=data.water+" / 8";
+  document.getElementById("waterProgress").style.width=Math.min(100,data.water/8*100)+"%";
+}
+function renderWidgets() {
+  const grid=document.getElementById("widgetGrid");
+  grid.innerHTML=data.widgets.map(id=>{
+    if(id==="clock")return `<div class="card"><div class="card-icon">◷</div>
+      <div class="card-label">Live clock</div><div class="card-value" id="clockValue">--:--</div>
+      <div class="card-note" id="clockDate">Local time</div></div>`;
+    if(id==="focus")return `<div class="card"><div class="card-icon">◉</div>
+      <div class="card-label">Focus timer</div><div class="card-value" id="focusValue">25:00</div>
+      <button class="secondary" style="margin-top:12px" onclick="toggleFocus()">Start / Pause</button>
+      <button class="secondary" style="margin-top:6px" onclick="resetFocus()">Reset</button></div>`;
+    if(id==="sleep")return `<div class="card"><div class="card-icon">☾</div>
+      <div class="card-label">Sleep target</div><div class="card-value">8 hrs</div>
+      <div class="card-note">A consistent sleep schedule matters.</div></div>`;
+    if(id==="study")return `<div class="card"><div class="card-icon">▤</div>
+      <div class="card-label">Study focus</div><div class="card-value">${data.habits.filter(x=>x.done).length}</div>
+      <div class="card-note">Habits completed</div></div>`;
+    if(id==="week")return `<div class="card wide"><div class="card-icon">▥</div>
+      <div class="card-label">Weekly overview</div>
+      <div class="week-bars">${["M","T","W","T","F","S","S"].map((d,i)=>`
+        <div class="week-day"><div class="week-bar"><div style="height:${i===new Date().getDay()-1?70:20}%"></div></div>${d}</div>`).join("")}
+      </div></div>`;
+    if(id==="water")return `<div class="card"><div class="card-icon">♧</div>
+      <div class="card-label">Water tracker</div><div class="card-value">${data.water}/8</div>
+      <div class="progress"><div style="width:${Math.min(100,data.water/8*100)}%"></div></div>
+      <button class="secondary" style="margin-top:12px" onclick="changeWater(1)">+ Add glass</button></div>`;
+    return "";
+  }).join("");
+  updateClock();
+  updateFocusDisplay();
+}
+function renderWidgetPicker() {
+  document.getElementById("widgetPicker").innerHTML=WIDGETS.map(w=>{
+    const added=data.widgets.includes(w.id);
+    return `<div class="widget-option">
+      <span>${w.icon} &nbsp; ${w.name}</span>
+      <button onclick="toggleWidget('${w.id}')">${added?"Remove":"Add"}</button>
+    </div>`;
+  }).join("");
+}
+function toggleWidget(id) {
+  if(data.widgets.includes(id))data.widgets=data.widgets.filter(x=>x!==id);
+  else data.widgets.push(id);
+  save();renderWidgetPicker();
+}
+function updateClock() {
+  const el=document.getElementById("clockValue");
+  if(!el)return;
+  const now=new Date();
+  el.textContent=now.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+  document.getElementById("clockDate").textContent=now.toLocaleDateString([], {weekday:"short",month:"short",day:"numeric"});
+}
+function updateFocusDisplay() {
+  const el=document.getElementById("focusValue");
+  if(!el)return;
+  const m=Math.floor(data.focusSeconds/60);
+  const s=data.focusSeconds%60;
+  el.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+function toggleFocus() {
+  data.focusRunning=!data.focusRunning;
+  save();
+}
+function resetFocus() {
+  data.focusRunning=false;data.focusSeconds=1500;save();
+}
+setInterval(()=>{
+  updateClock();
+  if(data.focusRunning&&data.focusSeconds>0) {
+    data.focusSeconds--;
+    updateFocusDisplay();
+    localStorage.setItem("youssef-os-data-v4",JSON.stringify(data));
+  } else if(data.focusRunning&&data.focusSeconds===0) {
+    data.focusRunning=false;
+    save();
+  }
+},1000);
+
+function render() {
+  document.getElementById("today").textContent=new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"});
+  document.getElementById("notes").value=data.notes||"";
+  renderHabits();
+  renderSchedule();
+  renderMeals();
+  renderGym();
+  renderProgress();
+  renderWater();
+  renderWidgets();
+}
+render();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .catch(error => console.error("Offline setup failed:", error));
+  });
+}
 </script>
 </body>
 </html>
-
